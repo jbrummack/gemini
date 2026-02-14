@@ -1,3 +1,4 @@
+#[allow(unused)]
 mod google {
     pub mod r#type {
         include!(concat!(
