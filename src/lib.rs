@@ -1,4 +1,4 @@
-pub mod google {
+mod google {
     pub mod r#type {
         include!(concat!(
             env!("CARGO_MANIFEST_DIR"),
@@ -38,9 +38,19 @@ pub mod google {
         ));
     }
 }
+pub mod gemini_types {
+    pub use crate::google::ai::generativelanguage::v1::*;
+}
+pub mod value {
+    pub use crate::google::protobuf::{ListValue, NullValue, Struct, Value, value::Kind};
+}
+pub mod vertex_types {
+    pub use crate::google::cloud::aiplatform::v1::*;
+}
 pub use crate::auth::user_account::UserAccount;
 pub use crate::client::gemini::GeminiClient;
 pub use crate::client::vertex::{ModelString, VertexClient};
+
 pub const GENERATIVE_LANGUAGE_URL: &str = "https://generativelanguage.googleapis.com";
 pub const VERTEX_AI_EUW: &str = "https://europe-west1-aiplatform.googleapis.com:443";
 

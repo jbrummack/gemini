@@ -1,10 +1,8 @@
-//use gemini::google::ai::generativelanguage::v1::generative_service_client::GenerativeServiceClient;
-
 use std::time::Duration;
 
 use gemini::{
     EU_WEST1, UserAccount, VertexClient,
-    google::cloud::aiplatform::v1::{Content, GenerateContentRequest, GenerationConfig},
+    vertex_types::{Content, GenerateContentRequest, GenerationConfig},
 };
 
 #[ctor::ctor]
@@ -15,11 +13,11 @@ fn crypto() {
 async fn main() -> anyhow::Result<()> {
     let account = UserAccount::from_file("vertex-user.json")?;
     let client = VertexClient::new(account, EU_WEST1)?;
-    tokio::time::sleep(Duration::from_secs(15)).await;
+
     let contents =
         Content::user().with_text("You are a book expert and you are recommending books.");
     let schema: serde_json::Value = serde_json::from_str(include_str!("test_schema.txt"))?;
-    let schema: gemini::google::protobuf::Value = schema.into();
+    let schema: gemini::value::Value = schema.into();
     let res = client
         .get_client_when_ready()
         .await
