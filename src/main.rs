@@ -1,7 +1,7 @@
 use gemini::{
     UserAccount, VertexClient,
     region::EU_WEST1,
-    vertex_types::{Content, GenerateContentRequest, GenerationConfig},
+    vertex_types::{Content, GenerateContentRequest, GenerationConfig, part::Data},
 };
 
 #[ctor::ctor]
@@ -31,6 +31,25 @@ async fn main() -> anyhow::Result<()> {
     println!("{res:#?}");
     let value: serde_json::Value = res.into_inner().deserialize()?;
     println!("{value:#?}");
-
+    let contents = Content::user()
+        .with_text("Generate a realistic image of a green apple in front of a white background!");
+    let image = client
+        .get_client()
+        .generate_content(
+            GenerateContentRequest::default()
+                .with_content(contents)
+                .model_string(client.model_string("gemini-2.5-flash-image"))
+                .generation_config(GenerationConfig::default().with_response_modality(
+                    gemini::vertex_types::generation_config::Modality::Image,
+                )),
+        )
+        .await?
+        .into_inner();
+    let response = image.get_single();
+    if let Some(Data::InlineData(blob)) = response {
+        println!("{}", &blob.mime_type);
+        let data: &[u8] = blob.data.as_ref();
+        std::fs::write("./output_img3.png", data)?;
+    }
     Ok(())
 }
