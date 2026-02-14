@@ -20,7 +20,7 @@ pub struct UserAccount {
     pub(crate) token_uri: String,
 }
 impl UserAccount {
-    ///Loads a key file that was downloaded from GCP
+    ///Loads a key file that was downloaded from GCP console
     pub fn from_file(path: impl AsRef<Path>) -> Result<Self, UacError> {
         let st = std::fs::read_to_string(&path).map_err(|e| {
             UacError::Io(
