@@ -38,6 +38,9 @@ pub mod google {
         ));
     }
 }
+pub use crate::auth::user_account::UserAccount;
+pub use crate::client::gemini::GeminiClient;
+pub use crate::client::vertex::{ModelString, VertexClient};
 pub const GENERATIVE_LANGUAGE_URL: &str = "https://generativelanguage.googleapis.com";
 pub const VERTEX_AI_EUW: &str = "https://europe-west1-aiplatform.googleapis.com:443";
 
@@ -52,7 +55,7 @@ macro_rules! define_region {
 define_region!(EU_WEST1, "europe-west1");
 pub struct Region(pub &'static str, pub &'static str);
 
-pub mod auth;
-pub mod client;
-pub mod request;
+mod auth;
+mod client;
+mod request;
 pub mod schema;

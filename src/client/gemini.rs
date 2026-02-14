@@ -16,12 +16,9 @@ impl Interceptor for ApiKeyInterceptor {
         &mut self,
         mut request: tonic::Request<()>,
     ) -> Result<tonic::Request<()>, tonic::Status> {
-        // 1. Parse the API key into a MetadataValue
-        // We use "from_str" here; ensure the key doesn't contain invalid characters
         let api_key = MetadataValue::try_from(self.0.as_str())
             .map_err(|_| Status::invalid_argument("Invalid API key format"))?;
 
-        // 2. Insert the "x-goog-api-key" header
         request.metadata_mut().insert("x-goog-api-key", api_key);
 
         Ok(request)

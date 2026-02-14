@@ -3,9 +3,7 @@
 use std::time::Duration;
 
 use gemini::{
-    EU_WEST1,
-    auth::user_account::UserAccount,
-    client::vertex::VertexClient,
+    EU_WEST1, UserAccount, VertexClient,
     google::cloud::aiplatform::v1::{Content, GenerateContentRequest, GenerationConfig},
 };
 
