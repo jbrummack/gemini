@@ -1,0 +1,7 @@
+/target
+vertex-user.json
+googleapis-master
+/codegen/target
+.DS_Store
+/protos
+src/auth_old
