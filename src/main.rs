@@ -1,5 +1,6 @@
 use gemini::{
-    EU_WEST1, UserAccount, VertexClient,
+    UserAccount, VertexClient,
+    region::EU_WEST1,
     vertex_types::{Content, GenerateContentRequest, GenerationConfig},
 };
 
