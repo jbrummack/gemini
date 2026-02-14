@@ -55,16 +55,18 @@ pub use crate::client::vertex::{ModelString, VertexClient};
 pub const GENERATIVE_LANGUAGE_URL: &str = "https://generativelanguage.googleapis.com";
 pub const VERTEX_AI_EUW: &str = "https://europe-west1-aiplatform.googleapis.com:443";
 
-macro_rules! define_region {
-    ($name:ident, $region_id:expr) => {
-        pub const $name: Region = Region(
-            $region_id,
-            concat!("https://", $region_id, "-aiplatform.googleapis.com:443"),
-        );
-    };
+pub mod region {
+    macro_rules! define_region {
+        ($name:ident, $region_id:expr) => {
+            pub const $name: Region = Region(
+                $region_id,
+                concat!("https://", $region_id, "-aiplatform.googleapis.com:443"),
+            );
+        };
+    }
+    pub struct Region(pub &'static str, pub &'static str);
+    define_region!(EU_WEST1, "europe-west1");
 }
-define_region!(EU_WEST1, "europe-west1");
-pub struct Region(pub &'static str, pub &'static str);
 
 mod auth;
 mod client;
