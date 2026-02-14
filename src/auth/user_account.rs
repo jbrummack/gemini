@@ -45,6 +45,7 @@ impl UserAccount {
             iat: now,
             exp: now + 3600,
         };
+
         let key = EncodingKey::from_rsa_pem(self.private_key.as_bytes())?;
         let jwt = encode(&Header::new(Algorithm::RS256), &claims, &key)?;
 

@@ -1,32 +1,30 @@
 [package]
 name = "gemini"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2024"
 
 [dependencies]
 anyhow = "1.0.101"
-base64 = "0.22.1"
-ctor = "0.6.3"
 dotenvy = "0.15.7"
 http-body-util = "0.1.3"
 hyper = "1.8.1"
-hyper-rustls = { version = "0.27.7", features = ["ring"] }
+hyper-rustls = { version = "0.27.7", default-features = false, features = ["http1"] }
 hyper-util = "0.1.20"
-jsonwebtoken = { version = "10.3.0", features = ["rust_crypto"] }
+jsonwebtoken = "10.3.0"
 prost = "0.14.3"
-rustls = { version = "0.23.36", features = ["ring"] }
+rustls = { version = "0.23.36", default-features = false }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
 thiserror = "2.0.18"
 tokio = { version = "1.49.0", features = ["macros","net","signal","sync","time","rt-multi-thread"] }
 #tokio-rustls = { version = "0.26.4", features = ["ring"] }
-tonic = { version = "0.14.3", features = [#"tls-native-roots",
-"tls-ring",
-"tls-webpki-roots"] }
+tonic = { version = "0.14.3", default-features= false,features = ["tls-webpki-roots","channel","codegen"] }
 tonic-prost = "0.14.3"
 tracing = "0.1.44"
 webpki-roots = "1.0.6"
 
 
 [features]
-default = []
+default = ["aws-lc-rs"]
+ring = ["rustls/ring","rustls/tls12","rustls/std","jsonwebtoken/rust_crypto" ]
+aws-lc-rs = ["rustls/aws-lc-rs","rustls/tls12","rustls/std","jsonwebtoken/aws-lc-rs","jsonwebtoken/aws_lc_rs"]

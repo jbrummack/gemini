@@ -7,6 +7,7 @@ use hyper_rustls::HttpsConnectorBuilder;
 use hyper_util::client::legacy::Client;
 use hyper_util::client::legacy::connect::HttpConnector;
 use jsonwebtoken::{Algorithm, EncodingKey, Header, encode};
+use rustls::ClientConfig;
 
 use crate::auth::{
     error::{JwtError, NetConnError},
@@ -43,8 +44,14 @@ pub struct TokenResponse {
 
 impl TokenFetcher {
     pub fn new(account: UserAccount) -> Result<Self, NetConnError> {
+        let mut root_store = rustls::RootCertStore::empty();
+        root_store.extend(webpki_roots::TLS_SERVER_ROOTS.iter().cloned());
+        let config = ClientConfig::builder()
+            .with_root_certificates(root_store)
+            .with_no_client_auth();
         let https = HttpsConnectorBuilder::new()
-            .with_native_roots()? // Or .with_webpki_roots()
+            .with_tls_config(config)
+            //.with_native_roots()? // Or .with_webpki_roots()
             .https_only()
             .enable_http1() //we run this once in an hour, so http2 doesnt matter
             //.enable_http2()
