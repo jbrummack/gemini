@@ -4,9 +4,9 @@ use tonic::{
 };
 
 use crate::{
-    Region,
     auth::{auth_interceptor::GcpAuthInterceptor, error::NetConnError, user_account::UserAccount},
     google::cloud::aiplatform::v1::prediction_service_client::PredictionServiceClient,
+    region::Region,
 };
 pub struct VertexClient {
     region: Region,
