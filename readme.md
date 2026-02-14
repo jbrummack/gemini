@@ -5,6 +5,5 @@ Both VertexAI and Gemini gRPC endpoints are supported
 
 == Roadmap
 - Clean up dependencies
-- Clean up CryptoProvider management
 - Token creation retry logic
 - Complete convenience scaffolding for all major request types
