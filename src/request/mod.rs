@@ -159,7 +159,9 @@ impl gemini_path::GenerationConfig {
 impl vertex_path::GenerationConfig {
     pub fn with_json_schema(mut self, schema: impl Into<google::protobuf::Value>) -> Self {
         let schema: google::protobuf::Value = schema.into();
+        //Invalid argument: response_mime_type must be set when response_json_schema is set.
         self.response_json_schema = Some(schema);
+        self.response_mime_type = "application/json".into();
         self
     }
     pub fn with_schema(mut self, schema: vertex_path::Schema) -> Self {
