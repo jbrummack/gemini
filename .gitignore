@@ -5,3 +5,4 @@ googleapis-master
 .DS_Store
 /protos
 src/auth_old
+.env
