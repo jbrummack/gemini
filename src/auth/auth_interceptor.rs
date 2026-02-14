@@ -13,6 +13,7 @@ impl GcpAuthInterceptor {
         let mut old_token = self.0.write().unwrap();
         *old_token = token;
     }
+    ///Await notification from the first token
     pub async fn await_ready(&self) {
         if !self.is_ready() {
             self.1.notified().await;
@@ -20,8 +21,12 @@ impl GcpAuthInterceptor {
         tracing::info!("GCP-Token Ready!")
         //println!("Token ready");
     }
+    ///Check if the Token is Ok()
     pub fn is_ready(&self) -> bool {
-        self.0.read().is_ok()
+        match self.0.read() {
+            Ok(rd) => rd.is_ok(),
+            _ => false,
+        }
     }
     pub fn new(account: UserAccount) -> Result<Self, NetConnError> {
         let s = Self(
@@ -51,6 +56,7 @@ impl GcpAuthInterceptor {
 }
 use tokio::sync::Notify;
 use tonic::service::Interceptor;
+///Inserts the fetched token
 impl Interceptor for GcpAuthInterceptor {
     fn call(
         &mut self,
