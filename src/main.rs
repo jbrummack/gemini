@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use gemini::{
     EU_WEST1, UserAccount, VertexClient,
     vertex_types::{Content, GenerateContentRequest, GenerationConfig},
