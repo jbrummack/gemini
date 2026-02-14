@@ -33,7 +33,7 @@ pub struct TokenFetcher {
     account: UserAccount,
     client: Client<hyper_rustls::HttpsConnector<HttpConnector>, Full<Bytes>>,
 }
-
+#[allow(unused)]
 #[derive(serde::Deserialize, Debug)]
 pub struct TokenResponse {
     pub access_token: String,
