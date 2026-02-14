@@ -4,10 +4,11 @@ use gemini::{
     vertex_types::{Content, GenerateContentRequest, GenerationConfig, part::Data},
 };
 
-#[ctor::ctor]
+/*#[ctor::ctor]
 fn crypto() {
     rustls::crypto::ring::default_provider().install_default();
-}
+}*/
+//jsonwebtoken::crypto::CryptoProvider::
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let account = UserAccount::from_file("vertex-user.json")?;
@@ -31,7 +32,7 @@ async fn main() -> anyhow::Result<()> {
     println!("{res:#?}");
     let value: serde_json::Value = res.into_inner().deserialize()?;
     println!("{value:#?}");
-    let contents = Content::user()
+    /*let contents = Content::user()
         .with_text("Generate a realistic image of a green apple in front of a white background!");
     let image = client
         .get_client()
@@ -50,6 +51,6 @@ async fn main() -> anyhow::Result<()> {
         println!("{}", &blob.mime_type);
         let data: &[u8] = blob.data.as_ref();
         std::fs::write("./output_img3.png", data)?;
-    }
+    }*/
     Ok(())
 }
