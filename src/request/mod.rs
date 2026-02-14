@@ -102,7 +102,15 @@ macro_rules! identical_impl {
                 self
             }
         }
-
+        impl GenerateContentResponse {
+            //crate::vertex_types::part::
+            pub fn get_single<'a>(&'a self) -> Option<&'a Data> {
+                self.get_parts()?.first().as_ref()?.data.as_ref()
+            }
+            pub fn get_parts<'a>(&'a self) -> Option<&'a [Part]> {
+                Some(&self.candidates.first()?.content.as_ref()?.parts)
+            }
+        }
         impl GenerateContentResponse {
             pub fn deserialize<T: serde::de::DeserializeOwned>(&self) -> serde_json::Result<T> {
                 for c in &self.candidates {
@@ -156,7 +164,15 @@ impl gemini_path::GenerationConfig {
         self
     }
 }
+
 impl vertex_path::GenerationConfig {
+    pub fn with_response_modality(
+        mut self,
+        modality: vertex_path::generation_config::Modality,
+    ) -> Self {
+        self.push_response_modalities(modality);
+        self
+    }
     pub fn with_json_schema(mut self, schema: impl Into<google::protobuf::Value>) -> Self {
         let schema: google::protobuf::Value = schema.into();
         //Invalid argument: response_mime_type must be set when response_json_schema is set.
