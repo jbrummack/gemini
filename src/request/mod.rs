@@ -1,4 +1,6 @@
 pub mod gemini;
+pub mod generic;
+pub mod image;
 pub mod vertex;
 use crate::google;
 use crate::google::ai::generativelanguage::v1 as gemini_path;
