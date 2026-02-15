@@ -103,6 +103,20 @@ macro_rules! identical_impl {
             }
         }
         impl GenerateContentResponse {
+            pub fn get_parts_owned(self) -> Option<Vec<Part>> {
+                for c in self.candidates {
+                    let parts = c.content?.parts;
+                    return Some(parts);
+                }
+                None
+            }
+            pub fn get_single_owned(self) -> Option<Data> {
+                let parts = self.get_parts_owned()?;
+                for p in parts {
+                    return p.data;
+                }
+                None
+            }
             //crate::vertex_types::part::
             pub fn get_single<'a>(&'a self) -> Option<&'a Data> {
                 self.get_parts()?.first().as_ref()?.data.as_ref()
