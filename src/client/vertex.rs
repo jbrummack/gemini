@@ -66,12 +66,8 @@ impl VertexClient {
     pub async fn get_client_when_ready(
         &self,
     ) -> PredictionServiceClient<InterceptedService<Channel, GcpAuthInterceptor>> {
-        let client = PredictionServiceClient::with_interceptor(
-            self.channel.clone(),
-            self.interceptor.clone(),
-        );
         self.interceptor.await_ready().await;
-        client
+        self.get_client()
     }
     ///Gets the client without waiting for the GCP-Token.
     pub fn get_client(
