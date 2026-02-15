@@ -5,7 +5,6 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1"
-dotenvy = "0.15"
 http-body-util = "0.1"
 hyper = "1.8"
 hyper-rustls = { version = "0.27", default-features = false, features = ["http1"] }
@@ -17,7 +16,6 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 thiserror = "2"
 tokio = { version = "1.49", features = ["macros","net","signal","sync","time","rt-multi-thread"] }
-#tokio-rustls = { version = "0.26.4", features = ["ring"] }
 tonic = { version = "0.14", default-features= false,features = ["tls-webpki-roots","channel","codegen"] }
 tonic-prost = "0.14"
 tracing = "0.1"
