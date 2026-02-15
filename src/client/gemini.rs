@@ -4,10 +4,13 @@ use tonic::{
     Status,
     metadata::MetadataValue,
     service::{Interceptor, interceptor::InterceptedService},
-    transport::Channel,
+    transport::{Channel, ClientTlsConfig},
 };
 
-use crate::google::ai::generativelanguage::v1::generative_service_client::GenerativeServiceClient;
+use crate::{
+    auth::error::NetConnError,
+    google::ai::generativelanguage::v1::generative_service_client::GenerativeServiceClient,
+};
 #[derive(Clone)]
 pub struct ApiKeyInterceptor(Arc<String>);
 
@@ -29,8 +32,12 @@ pub struct GeminiClient {
     channel: Channel,
 }
 impl GeminiClient {
-    pub fn new() -> Self {
-        todo!()
+    pub fn new(api_key: String, url: &'static str) -> Result<Self, NetConnError> {
+        let api_key = ApiKeyInterceptor(Arc::new(api_key));
+        let tls = ClientTlsConfig::new().with_enabled_roots();
+
+        let channel = Channel::from_static(url).tls_config(tls)?.connect_lazy();
+        Ok(Self { api_key, channel })
     }
     pub fn get_client(
         &self,
@@ -38,5 +45,11 @@ impl GeminiClient {
         let client =
             GenerativeServiceClient::with_interceptor(self.channel.clone(), self.api_key.clone());
         client
+    }
+    ///This does the same as get_client and exists for interface compatibility with VertexClient
+    pub async fn get_client_when_ready(
+        &self,
+    ) -> GenerativeServiceClient<InterceptedService<Channel, ApiKeyInterceptor>> {
+        self.get_client()
     }
 }
