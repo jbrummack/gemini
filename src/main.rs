@@ -1,7 +1,7 @@
 use gemini::{
     UserAccount, VertexClient,
     region::EU_WEST1,
-    vertex_types::{Content, GenerateContentRequest, GenerationConfig, part::Data},
+    vertex_types::{Content, GenerateContentRequest, GenerationConfig},
 };
 
 /*#[ctor::ctor]
@@ -32,7 +32,9 @@ async fn main() -> anyhow::Result<()> {
     println!("{res:#?}");
     let value: serde_json::Value = res.into_inner().deserialize()?;
     println!("{value:#?}");
-    /*let contents = Content::user()
+    /*
+     use  gemini::vertex_types::part::Data
+     let contents = Content::user()
         .with_text("Generate a realistic image of a green apple in front of a white background!");
     let image = client
         .get_client()
