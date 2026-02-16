@@ -3,8 +3,8 @@ use serde::de::Error;
 use crate::{
     client::vertex::ModelString,
     google::cloud::aiplatform::v1::{
-        Blob, Content, GenerateContentRequest, GenerateContentResponse, GenerationConfig, Part,
-        part::Data,
+        Blob, Content, FileData, GenerateContentRequest, GenerateContentResponse, GenerationConfig,
+        Part, part::Data,
     },
     identical_impl,
 };

@@ -43,6 +43,7 @@ macro_rules! identical_impl {
                 c.role = "model".into();
                 c
             }
+
             pub fn with_jpeg(self, data: Vec<u8>) -> Self {
                 self.with_image(data, "image/jpeg")
             }
@@ -157,6 +158,14 @@ impl vertex_path::Part {
             thought_signature: Vec::with_capacity(0),
             media_resolution: None,
         }
+    }
+}
+impl vertex_path::Content {
+    pub fn with_url(self, url: impl Into<String>, mime_type: impl Into<String>) -> Self {
+        self.with_part(vertex_path::part::Data::FileData(vertex_path::FileData {
+            mime_type: mime_type.into(),
+            file_uri: url.into(),
+        }))
     }
 }
 impl vertex_path::GenerateContentRequest {
