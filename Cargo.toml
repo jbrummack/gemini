@@ -15,7 +15,7 @@ rustls = { version = "0.23", default-features = false }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 thiserror = "2"
-tokio = { version = "1.49", features = ["macros","net","signal","sync","time","rt-multi-thread"] }
+tokio = { version = "1", features = ["macros","net","signal","sync","time","rt-multi-thread"] }
 tonic = { version = "0.14", default-features= false,features = ["tls-webpki-roots","channel","codegen"] }
 tonic-prost = "0.14"
 tracing = "0.1"
