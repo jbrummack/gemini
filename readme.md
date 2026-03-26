@@ -1,9 +1,9 @@
-= gRPC-Bindings for Google Gemini
-== Supports VertexAI and the Gemini API
+# gRPC-Bindings for Google Gemini 
+## Supports VertexAI and the Gemini API
 Both VertexAI and Gemini gRPC endpoints are supported
-== Manages GCP-Authentication automatically
+## Manages GCP-Authentication automatically
+Creates a token from account credentials every hour which is then cached
 
-== Roadmap
-- Clean up dependencies
+## Roadmap
 - Token creation retry logic
 - Complete convenience scaffolding for all major request types
