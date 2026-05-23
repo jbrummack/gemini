@@ -1,3 +1,34 @@
+pub struct Image {
+    mime: ImageMime,
+    data: Vec<u8>,
+}
+impl Image {
+    ///Returns none if the image mime cant be established
+    pub fn new(data: Vec<u8>) -> Option<Self> {
+        let mime = ImageMime::try_detect_image_mime(&data)?;
+        Some(Self { mime, data })
+    }
+    pub fn new_known(data: Vec<u8>, mime: ImageMime) -> Self {
+        Image { mime, data }
+    }
+}
+impl From<Image> for crate::gemini_types::Blob {
+    fn from(value: Image) -> Self {
+        crate::gemini_types::Blob {
+            mime_type: value.mime.name().into(),
+            data: value.data,
+        }
+    }
+}
+impl From<Image> for crate::vertex_types::Blob {
+    fn from(value: Image) -> Self {
+        crate::vertex_types::Blob {
+            mime_type: value.mime.name().into(),
+            data: value.data,
+        }
+    }
+}
+
 pub enum ImageMime {
     Jpeg,
     Png,
