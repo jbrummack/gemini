@@ -4,9 +4,12 @@ pub struct Image {
 }
 impl Image {
     ///Returns none if the image mime cant be established
-    pub fn new(data: Vec<u8>) -> Option<Self> {
-        let mime = ImageMime::try_detect_image_mime(&data)?;
-        Some(Self { mime, data })
+    pub fn new(data: Vec<u8>) -> Result<Self, Vec<u8>> {
+        if let Some(mime) = ImageMime::try_detect_image_mime(&data) {
+            Ok(Self { mime, data })
+        } else {
+            Err(data)
+        }
     }
     pub fn new_known(data: Vec<u8>, mime: ImageMime) -> Self {
         Image { mime, data }
