@@ -6,7 +6,6 @@ use tonic::{
 use crate::{
     auth::{
         auth_interceptor::GcpAuthInterceptor, error::NetConnError, hyper_fetcher::FetchAccount,
-        user_account::UserAccount,
     },
     google::cloud::aiplatform::v1::prediction_service_client::PredictionServiceClient,
     region::Region,
