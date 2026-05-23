@@ -1,10 +1,11 @@
 pub mod gemini;
-pub mod generic;
+//pub mod generic;
 pub mod image;
 pub mod vertex;
 use crate::google;
 use crate::google::ai::generativelanguage::v1 as gemini_path;
 use crate::google::cloud::aiplatform::v1 as vertex_path;
+
 #[macro_export(local_inner_macros)]
 macro_rules! identical_impl {
     () => {
@@ -45,25 +46,29 @@ macro_rules! identical_impl {
             }
 
             pub fn with_jpeg(self, data: Vec<u8>) -> Self {
-                self.with_image(data, "image/jpeg")
+                self.with_image_mime(data, "image/jpeg")
             }
             pub fn with_png(self, data: Vec<u8>) -> Self {
-                self.with_image(data, "image/png")
+                self.with_image_mime(data, "image/png")
             }
             pub fn with_webp(self, data: Vec<u8>) -> Self {
-                self.with_image(data, "image/webp")
+                self.with_image_mime(data, "image/webp")
             }
             pub fn with_heic(self, data: Vec<u8>) -> Self {
-                self.with_image(data, "image/heic")
+                self.with_image_mime(data, "image/heic")
             }
             pub fn with_heif(self, data: Vec<u8>) -> Self {
-                self.with_image(data, "image/heif")
+                self.with_image_mime(data, "image/heif")
             }
-            pub fn with_image(self, data: Vec<u8>, mime_type: impl Into<String>) -> Self {
+            pub fn with_image_mime(self, data: Vec<u8>, mime_type: impl Into<String>) -> Self {
                 self.with_data(Blob {
                     mime_type: mime_type.into(),
                     data,
                 })
+            }
+
+            pub fn with_image(self, image: crate::request::image::Image) -> Self {
+                self.with_data(image.into())
             }
             pub fn with_data(self, blob: Blob) -> Self {
                 self.with_part(Data::InlineData(blob))

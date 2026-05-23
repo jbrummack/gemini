@@ -3,7 +3,11 @@ use std::{
     time::Duration,
 };
 
-use crate::auth::{error::NetConnError, hyper_fetcher::TokenFetcher, user_account::UserAccount};
+use crate::auth::{
+    error::NetConnError,
+    hyper_fetcher::{FetchAccount, TokenFetcher},
+    user_account::UserAccount,
+};
 ///Interceptor that asynchronously fetches a token, which can then be read synchronously.
 #[derive(Debug, Clone)]
 pub struct GcpAuthInterceptor(Arc<RwLock<Result<String, tonic::Status>>>, Arc<Notify>);
@@ -28,7 +32,7 @@ impl GcpAuthInterceptor {
             _ => false,
         }
     }
-    pub fn new(account: UserAccount) -> Result<Self, NetConnError> {
+    pub fn new(account: FetchAccount) -> Result<Self, NetConnError> {
         let s = Self(
             Arc::new(RwLock::new(Err(tonic::Status::unavailable(
                 "Hasnt fetched token yet. If you want to wait for the token, use get_client_when_ready()!",

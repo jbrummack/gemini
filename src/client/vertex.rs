@@ -4,7 +4,10 @@ use tonic::{
 };
 
 use crate::{
-    auth::{auth_interceptor::GcpAuthInterceptor, error::NetConnError, user_account::UserAccount},
+    auth::{
+        auth_interceptor::GcpAuthInterceptor, error::NetConnError, hyper_fetcher::FetchAccount,
+        user_account::UserAccount,
+    },
     google::cloud::aiplatform::v1::prediction_service_client::PredictionServiceClient,
     region::Region,
 };
@@ -36,9 +39,19 @@ impl VertexClient {
         Ok(self)
     }*/
 
-    pub fn new(account: UserAccount, Region(loc, url): Region) -> Result<Self, NetConnError> {
+    pub fn new(
+        account: impl Into<FetchAccount>,
+        Region(loc, url): Region,
+    ) -> Result<Self, NetConnError> {
+        let account: FetchAccount = account.into();
         //let region: String = loc.into();
-        let project_id = account.project_id.clone();
+        let project_id = match &account {
+            FetchAccount::UserAccount(user_account) => user_account.project_id.clone(),
+            FetchAccount::ImpersonatedAccount(impersonated_account) => impersonated_account
+                .project_id
+                .clone()
+                .unwrap_or(String::new()),
+        };
         let interceptor = GcpAuthInterceptor::new(account)?;
         let tls = ClientTlsConfig::new().with_enabled_roots();
 

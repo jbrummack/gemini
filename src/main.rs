@@ -1,17 +1,18 @@
+use std::error::Error;
+
 use gemini::{
-    UserAccount, VertexClient,
+    ImpersonatedAccount, VertexClient,
     region::EU_WEST1,
     vertex_types::{Content, GenerateContentRequest, GenerationConfig},
 };
 
-/*#[ctor::ctor]
-fn crypto() {
-    rustls::crypto::ring::default_provider().install_default();
-}*/
-//jsonwebtoken::crypto::CryptoProvider::
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    let account = UserAccount::from_file("vertex-user.json")?;
+async fn main() -> Result<(), Box<dyn Error>> {
+    let account = ImpersonatedAccount::from_file(
+        dotenvy::var("GOOGLE_APPLICATION_CREDENTIALS")?,
+        dotenvy::var("PROJECT_ID")?,
+    )?;
+    //let account = gemini::UserAccount::from_file("vertex-user.json")?;
     let client = VertexClient::new(account, EU_WEST1)?;
 
     let contents =
