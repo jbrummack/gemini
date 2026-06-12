@@ -6,3 +6,7 @@ googleapis-master
 /protos
 src/auth_old
 .env
+wif.json
+/keys
+client_secret
+client_req

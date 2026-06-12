@@ -9,6 +9,67 @@ use crate::auth::{
     error::{JwtError, UacError},
     token::Claims,
 };
+//get_local_private_key()?
+impl WorkloadIdentityAccount {
+    pub fn create_subject_token() -> Result<String, JwtError> {
+        let now = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs();
+
+        let claims = Claims {
+            iss: "my-vps",
+            //sub: "vps-1",
+            scope: "https://www.googleapis.com/auth/cloud-platform",
+            aud: "google-wif",
+            iat: now as usize,
+            exp: (now + 300) as usize, // IMPORTANT: short-lived (5 min)
+        };
+
+        let key = EncodingKey::from_rsa_pem(&[])?;
+
+        let jwt = encode(&Header::new(Algorithm::RS256), &claims, &key)?;
+
+        Ok(jwt)
+    }
+}
+#[allow(unused)]
+#[derive(Debug, serde::Deserialize, Clone)]
+pub struct CredentialSource {
+    /// File path containing the subject token (e.g. OIDC token mounted by k8s/CI)
+    pub(crate) file: Option<String>,
+    /// URL to fetch the subject token from (e.g. cloud provider metadata server)
+    pub(crate) url: Option<String>,
+    /// Optional headers for the URL request
+    pub(crate) headers: Option<std::collections::HashMap<String, String>>,
+}
+#[allow(unused)]
+#[derive(Debug, serde::Deserialize, Clone)]
+pub struct WorkloadIdentityAccount {
+    #[serde(default)]
+    pub(crate) project_id: String,
+    pub(crate) audience: String,
+    pub(crate) subject_token_type: String,
+    pub(crate) token_url: String,
+    pub(crate) credential_source: CredentialSource,
+    /// If set, exchanged token is used to impersonate this service account
+    /// e.g. "https://iam.googleapis.com/v1/projects/-/serviceAccounts/sa@project.iam.gserviceaccount.com:generateAccessToken"
+    pub(crate) service_account_impersonation_url: Option<String>,
+}
+#[allow(unused)]
+#[derive(serde::Deserialize, Debug)]
+struct StsTokenResponse {
+    access_token: String,
+    expires_in: u64,
+    token_type: String,
+}
+
+#[allow(unused)]
+#[derive(serde::Deserialize, Debug)]
+struct ImpersonationTokenResponse {
+    #[serde(rename = "accessToken")]
+    access_token: String,
+    #[serde(rename = "expireTime")]
+    expire_time: String,
+}
+
 #[allow(unused)]
 #[derive(Debug, serde::Deserialize, Clone)]
 pub struct ImpersonatedAccount {
