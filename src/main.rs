@@ -1,19 +1,17 @@
 use std::error::Error;
 
 use gemini::{
-    ImpersonatedAccount, VertexClient, WorkloadIdentityAccount,
+    ImpersonatedAccount, VertexClient,
     region::EU_WEST1,
     vertex_types::{Content, GenerateContentRequest, GenerationConfig},
 };
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let account =
-        WorkloadIdentityAccount::from_file("wif.json", Some(dotenvy::var("PROJECT_ID")?))?;
-    /*let account = ImpersonatedAccount::from_file(
+    let account = ImpersonatedAccount::from_file(
         dotenvy::var("GOOGLE_APPLICATION_CREDENTIALS")?,
         dotenvy::var("PROJECT_ID")?,
-    )?;*/
+    )?;
     //let account = gemini::UserAccount::from_file("vertex-user.json")?;
     let client = VertexClient::new(account, EU_WEST1)?;
 

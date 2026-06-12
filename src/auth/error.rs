@@ -1,15 +1,5 @@
-use std::time::SystemTimeError;
-
 #[derive(Debug, thiserror::Error)]
 pub enum NetConnError {
-    #[error("{0}")]
-    Chrono(#[from] chrono::ParseError),
-    #[error("{0}")]
-    Status(hyper::StatusCode),
-    #[error("{0}")]
-    Time(#[from] SystemTimeError),
-    #[error("No credential source")]
-    MissingCredentialSource,
     #[error("{0}")]
     UnexpectedResponse(String),
     #[error("{0}")]

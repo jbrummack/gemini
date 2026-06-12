@@ -50,9 +50,7 @@ impl VertexClient {
                 .project_id
                 .clone()
                 .unwrap_or(String::new()),
-            FetchAccount::WorkloadIdentity(wif) => wif.project_id.clone(),
         };
-        //println!("Interceptor:");
         let interceptor = GcpAuthInterceptor::new(account)?;
         let tls = ClientTlsConfig::new().with_enabled_roots();
 

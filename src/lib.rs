@@ -50,18 +50,12 @@ pub mod vertex_types {
 }
 use crate::auth::error::{NetConnError, UacError};
 use crate::auth::hyper_fetcher::FetchAccount;
-
-pub use crate::auth::user_account::{ImpersonatedAccount, UserAccount, WorkloadIdentityAccount};
+pub use crate::auth::user_account::{ImpersonatedAccount, UserAccount};
 pub use crate::client::gemini::GeminiClient;
 pub use crate::client::vertex::{ModelString, VertexClient};
 impl From<ImpersonatedAccount> for FetchAccount {
     fn from(value: ImpersonatedAccount) -> Self {
         FetchAccount::ImpersonatedAccount(value)
-    }
-}
-impl From<WorkloadIdentityAccount> for FetchAccount {
-    fn from(value: WorkloadIdentityAccount) -> Self {
-        FetchAccount::WorkloadIdentity(value)
     }
 }
 impl From<UserAccount> for FetchAccount {
